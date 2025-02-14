@@ -1,37 +1,49 @@
-/* ZOMG. FUNCTION! */
-/* I ALSO LEARNED HOW TO DO A LOT OF THIS BY CHANGING .CSS INSTEAD OF ADDING/REMOVING CLASSES, WHICH I LEARNED IS BETTER. I ALSO LEARNED THAT I SHOULD MAKE VARS FOR BODY AND IMAGE SINCE I'M USING THEM MORE THAN ONCE! */
-var beardedBoo = function() {
-    var body = $('body'),
-        image = $("#image");
-    body.removeClass("no").removeClass("maybe");
-    image.removeClass("benefits").removeClass("certificate");
+$(document).ready(function() {
+    function beardedBoo() {
+        var body = $("body");
+        var image = $("#image");
 
-    var answer = prompt("Will you be my valentine? Yes, No, Maybe?").toLowerCase();
-    
-    /* .toLowerCase IS BEST PRACTICE! IT'S ALSO OK IF YOU TYPE THE FIRST LETTER INSTEAD OF THE WORD! */
-    if (answer == "yes" || answer == 'y') {
-        body.addClass("yes");
-        image.addClass("certificate");
-    } else if (answer == "maybe" || answer == 'm') {
-        body.addClass("maybe");
+        // Reset previous classes
+        body.removeClass("no maybe yes");
+        image.removeClass("benefits certificate");
 
-        /* I WANTED THE BG TO CHANGE BEFORE THE ALERT AND THE IMAGE AFTER THE PROMPT AND THE NEXT PROMPT AFTER THAT! 
-           I LEARNED THAT IF ALERT AND IMAGE ARE NOT IN THE setTimeout TOGETHER, IT DOES THEM AT THE SAME TIME. */
-        setTimeout(beardedBoo, 6000);
-        setTimeout(function() {
-            alert("Perhaps you are not aware of the many benefits");
-            image.addClass("benefits");
-        }, 200);
+        var answer = prompt("Will you be my Valentine? Yes, No, Maybe?");
 
-    /* HEY!!! */
-    } else {
-        body.addClass("no");
-        setTimeout(function() {
-            alert("Say it isn't so. Please try again.");
+        if (answer) {
+            answer = answer.trim().toLowerCase(); // Normalize input
+
+            if (answer === "yes" || answer === "y") {
+                body.addClass("yes");
+                image.addClass("certificate");
+            } 
+            else if (answer === "maybe" || answer === "m") {
+                body.addClass("maybe");
+
+                // Show benefits after a short delay
+                setTimeout(function() {
+                    alert("Perhaps you are not aware of the many benefits.");
+                    image.addClass("benefits");
+                }, 500);
+
+                // Ask again after a longer delay
+                setTimeout(beardedBoo, 5000);
+            } 
+            else {
+                body.addClass("no");
+
+                // Retry after alert
+                setTimeout(function() {
+                    alert("Say it isn't so! Please try again.");
+                    beardedBoo();
+                }, 500);
+            }
+        } else {
+            // Handle empty input
+            alert("You didn't answer! Let's try again.");
             beardedBoo();
-        }, 200);
+        }
     }
-};
 
-setTimeout(beardedBoo, 300);
-/* ALL THESE ALERTS/PROMPTS COULD GET ANNOYING, IT'S BEST TO JUST BE MY VALENTINE */
+    // Delay function execution slightly
+    setTimeout(beardedBoo, 1000);
+});
